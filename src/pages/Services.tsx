@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import industrialAI from "@/assets/industrial-ai.jpg";
+import aiConsulting from "@/assets/ai-consulting.jpg";
 
 const Services = () => {
   const services = [
@@ -58,10 +60,18 @@ const Services = () => {
       <Navigation />
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4 bg-gradient-hero">
-        <div className="container mx-auto max-w-4xl text-center">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-            Our <span className="bg-gradient-primary bg-clip-text text-transparent">Services</span>
+      <section className="relative pt-32 pb-20 px-4 overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <img 
+            src={aiConsulting} 
+            alt="AI Services" 
+            className="w-full h-full object-cover opacity-20"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/70 to-background"></div>
+        </div>
+        <div className="container mx-auto max-w-4xl text-center relative z-10 animate-fade-in-up">
+          <h1 className="text-5xl md:text-6xl font-bold mb-6">
+            Our <span className="gradient-text">Services</span>
           </h1>
           <p className="text-xl text-muted-foreground">
             Comprehensive AI solutions designed to transform your business operations
@@ -74,12 +84,16 @@ const Services = () => {
         <div className="container mx-auto max-w-6xl">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {services.map((service, index) => (
-              <Card key={index} className="hover:shadow-xl transition-all border-2 hover:border-primary/50">
+              <Card 
+                key={index} 
+                className="hover:shadow-xl transition-all border-2 hover:border-primary/50 group hover-lift animate-fade-in"
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
                 <CardHeader>
-                  <div className="h-14 w-14 rounded-xl bg-gradient-primary flex items-center justify-center mb-4">
+                  <div className="h-14 w-14 rounded-xl bg-gradient-primary flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                     <service.icon className="h-7 w-7 text-white" />
                   </div>
-                  <CardTitle className="text-2xl">{service.title}</CardTitle>
+                  <CardTitle className="text-2xl group-hover:text-primary transition-colors">{service.title}</CardTitle>
                   <CardDescription className="text-base">
                     {service.description}
                   </CardDescription>
@@ -100,10 +114,59 @@ const Services = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* Feature Section with Image */}
       <section className="py-20 px-4 bg-muted/30">
+        <div className="container mx-auto max-w-6xl">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl hover-lift">
+              <img 
+                src={industrialAI} 
+                alt="Industrial AI Solutions" 
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent"></div>
+            </div>
+            <div className="animate-fade-in-up">
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">
+                Industry-Leading AI Implementation
+              </h2>
+              <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
+                Our comprehensive approach ensures seamless integration of AI technologies into your existing workflows, maximizing efficiency and ROI.
+              </p>
+              <ul className="space-y-4 mb-8">
+                <li className="flex items-start space-x-3">
+                  <div className="h-6 w-6 rounded-full bg-gradient-primary flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <div className="h-2 w-2 rounded-full bg-white" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold mb-1">Proven Methodology</h3>
+                    <p className="text-muted-foreground">Battle-tested implementation strategies that deliver results</p>
+                  </div>
+                </li>
+                <li className="flex items-start space-x-3">
+                  <div className="h-6 w-6 rounded-full bg-gradient-primary flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <div className="h-2 w-2 rounded-full bg-white" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold mb-1">Continuous Support</h3>
+                    <p className="text-muted-foreground">Ongoing assistance to ensure long-term success</p>
+                  </div>
+                </li>
+              </ul>
+              <Link to="/contact">
+                <Button size="lg" className="shadow-lg hover:shadow-xl transition-all">
+                  Learn More <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 px-4">
         <div className="container mx-auto max-w-4xl">
-          <Card className="border-2 border-primary/20 overflow-hidden">
+          <Card className="border-2 border-primary/20 overflow-hidden shadow-xl hover:shadow-2xl transition-all hover-lift">
             <div className="bg-gradient-primary p-1">
               <CardContent className="bg-background p-12 text-center">
                 <h2 className="text-3xl md:text-4xl font-bold mb-4">
@@ -113,7 +176,7 @@ const Services = () => {
                   Ready to transform your business with AI? Book a consultation with our experts today.
                 </p>
                 <Link to="/contact">
-                  <Button size="lg" className="text-base px-8">
+                  <Button size="lg" className="text-base px-8 shadow-lg hover:shadow-xl transition-all">
                     Book Now <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </Link>
