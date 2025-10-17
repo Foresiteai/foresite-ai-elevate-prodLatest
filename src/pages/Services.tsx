@@ -60,20 +60,20 @@ const Services = () => {
       <Navigation />
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 px-4 overflow-hidden">
+      <section className="relative pt-32 pb-20 px-4 overflow-hidden min-h-[70vh] flex items-center">
         <div className="absolute inset-0 z-0">
           <img 
             src={aiConsulting} 
             alt="AI Services" 
-            className="w-full h-full object-cover opacity-20"
+            className="w-full h-full object-cover opacity-50"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/70 to-background"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-background/80 via-background/60 to-secondary/30"></div>
         </div>
         <div className="container mx-auto max-w-4xl text-center relative z-10 animate-fade-in-up">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6">
-            Our <span className="gradient-text">Services</span>
+          <h1 className="text-6xl md:text-7xl font-bold mb-6 drop-shadow-lg">
+            Our <span className="gradient-text drop-shadow-2xl">Services</span>
           </h1>
-          <p className="text-xl text-muted-foreground">
+          <p className="text-2xl text-foreground/90 font-medium drop-shadow-md">
             Comprehensive AI solutions designed to transform your business operations
           </p>
         </div>

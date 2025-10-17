@@ -80,31 +80,31 @@ const Home = () => {
       <Navigation />
 
       {/* Hero Section with Image */}
-      <section className="relative pt-32 pb-20 px-4 overflow-hidden">
+      <section className="relative pt-32 pb-20 px-4 overflow-hidden min-h-[90vh] flex items-center">
         <div className="absolute inset-0 z-0">
           <img 
             src={heroImage} 
             alt="AI Technology" 
-            className="w-full h-full object-cover opacity-20"
+            className="w-full h-full object-cover opacity-40"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-background/70 via-background/50 to-primary/20"></div>
         </div>
         
         <div className="container mx-auto max-w-6xl relative z-10">
           <div className="text-center space-y-8 animate-fade-in-up">
             <div className="inline-block">
-              <div className="px-4 py-2 bg-primary/10 rounded-full text-sm font-medium text-primary mb-4 border border-primary/20">
-                Next-Generation AI Solutions
+              <div className="px-6 py-2.5 bg-primary/20 backdrop-blur-md rounded-full text-sm font-semibold text-primary mb-6 border-2 border-primary/30 shadow-lg">
+                🚀 Next-Generation AI Solutions
               </div>
             </div>
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-foreground leading-tight">
+            <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold text-foreground leading-tight drop-shadow-lg">
               Empowering Industries
               <br />
-              <span className="gradient-text">
+              <span className="gradient-text drop-shadow-2xl">
                 Through AI
               </span>
             </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
+            <p className="text-2xl md:text-3xl text-foreground/90 max-w-3xl mx-auto font-medium drop-shadow-md">
               Innovative GenAI Solutions Tailored for Your Business
             </p>
 
@@ -113,23 +113,23 @@ const Home = () => {
               {features.map((feature, index) => (
                 <div
                   key={index}
-                  className="flex items-center space-x-2 px-6 py-3 bg-card border border-border rounded-full shadow-sm hover:shadow-lg hover:border-primary/50 transition-all duration-300 hover-lift"
+                  className="flex items-center space-x-2 px-6 py-3.5 bg-card/90 backdrop-blur-md border-2 border-border rounded-full shadow-lg hover:shadow-2xl hover:border-primary/70 transition-all duration-300 hover-lift hover:bg-card"
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
                   <feature.icon className="h-5 w-5 text-primary" />
-                  <span className="text-sm font-medium">{feature.text}</span>
+                  <span className="text-sm font-semibold">{feature.text}</span>
                 </div>
               ))}
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
               <Link to="/contact">
-                <Button size="lg" className="text-base px-8 shadow-lg hover:shadow-xl transition-all duration-300">
-                  Get Started <ArrowRight className="ml-2 h-5 w-5" />
+                <Button size="lg" className="text-lg px-10 py-6 shadow-2xl hover:shadow-primary/50 transition-all duration-300 hover:scale-105">
+                  Get Started <ArrowRight className="ml-2 h-6 w-6" />
                 </Button>
               </Link>
               <Link to="/services">
-                <Button size="lg" variant="outline" className="text-base px-8 border-2 hover:border-primary transition-all duration-300">
+                <Button size="lg" variant="outline" className="text-lg px-10 py-6 border-2 bg-card/50 backdrop-blur-md hover:border-primary hover:bg-card transition-all duration-300 hover:scale-105 shadow-xl">
                   Explore Services
                 </Button>
               </Link>
