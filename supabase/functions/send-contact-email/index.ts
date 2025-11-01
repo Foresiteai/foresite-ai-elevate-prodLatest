@@ -28,7 +28,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send notification to admin with all contact details
     const adminEmailResponse = await resend.emails.send({
-      from: "ForeSite AI <onboarding@resend.dev>",
+      from: "ForesiteaiMessaging <onboarding@resend.dev>",
       to: ["foresiteai@gmail.com"],
       replyTo: email, // Allow direct reply to the person who submitted the form
       subject: `New Contact Form Submission from ${firstName} ${lastName}`,
@@ -47,7 +47,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send confirmation to user
     const userEmailResponse = await resend.emails.send({
-      from: "ForeSite AI <onboarding@resend.dev>",
+      from: "ForesiteaiMessaging <onboarding@resend.dev>",
       to: [email],
       subject: "Thank you for reaching out to ForeSite AI",
       html: `
