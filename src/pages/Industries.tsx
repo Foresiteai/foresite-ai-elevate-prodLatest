@@ -102,12 +102,7 @@ const Industries = () => {
     
     // Use database data if available, otherwise use default data
     if (data && data.length > 0) {
-      // Map database industries to include local images
-      const industriesWithImages = data.map(industry => ({
-        ...industry,
-        image_url: industryImageMap[industry.name] || industry.image_url
-      }));
-      setDbIndustries(industriesWithImages);
+      setDbIndustries(data);
     } else {
       setDbIndustries(defaultIndustries as any);
     }
