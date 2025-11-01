@@ -184,31 +184,44 @@ const Industries = () => {
               <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full"></div>
             </div>
           ) : (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {dbIndustries.map((industry, index) => (
-                <div
-                  key={industry.id}
-                  onClick={() => handleIndustryClick(industry.slug)}
-                  className="relative group overflow-hidden rounded-xl h-48 cursor-pointer hover-lift animate-fade-in"
-                  style={{ animationDelay: `${index * 0.1}s` }}
-                >
-                  {industry.image_url ? (
-                    <>
-                      <img 
-                        src={industry.image_url} 
-                        alt={industry.name}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-primary-dark/90 to-primary/40 group-hover:from-primary/90 transition-all duration-300"></div>
-                    </>
-                  ) : (
-                    <div className="absolute inset-0 bg-gradient-primary"></div>
-                  )}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <p className="text-white font-semibold text-lg text-center px-4">{industry.name}</p>
-                  </div>
-                </div>
-              ))}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {dbIndustries.map((industry, index) => {
+                const IconComponent = getIconComponent(industry.icon);
+                const colorGradient = industry.name 
+                  ? getColorGradient(industry.name) 
+                  : getColorFromIcon(industry.icon);
+                
+                return (
+                  <Card
+                    key={industry.id}
+                    onClick={() => handleIndustryClick(industry.slug)}
+                    className="hover:shadow-xl transition-all border-2 hover:border-primary/50 group overflow-hidden hover-lift animate-fade-in cursor-pointer"
+                    style={{ animationDelay: `${index * 0.1}s` }}
+                  >
+                    {industry.image_url && (
+                      <div className="relative h-48 overflow-hidden">
+                        <img 
+                          src={industry.image_url} 
+                          alt={industry.name}
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent"></div>
+                      </div>
+                    )}
+                    <CardHeader>
+                      <div className={`h-16 w-16 rounded-xl bg-gradient-to-br ${colorGradient} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-lg`}>
+                        <IconComponent className="h-8 w-8 text-white" />
+                      </div>
+                      <CardTitle className="text-2xl group-hover:text-primary transition-colors">{industry.name}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <CardDescription className="text-base leading-relaxed">
+                        {industry.description}
+                      </CardDescription>
+                    </CardContent>
+                  </Card>
+                );
+              })}
             </div>
           )}
         </div>
