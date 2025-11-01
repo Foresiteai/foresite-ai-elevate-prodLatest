@@ -1,59 +1,47 @@
-import { MessageSquare, Cpu, Wrench, GraduationCap, ArrowRight } from "lucide-react";
+import { useEffect, useState } from "react";
+import * as LucideIcons from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { supabase } from "@/integrations/supabase/client";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import industrialAI from "@/assets/industrial-ai.jpg";
 import aiConsulting from "@/assets/ai-consulting.jpg";
 
+interface Service {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  features: string[];
+}
+
 const Services = () => {
-  const services = [
-    {
-      icon: MessageSquare,
-      title: "AI Consulting Services",
-      description: "Strategic guidance on leveraging AI for your business. We help you develop a comprehensive roadmap and ensure alignment with your business goals.",
-      features: [
-        "Strategic AI roadmap development",
-        "Business goal alignment",
-        "Technology assessment",
-        "Implementation planning",
-      ],
-    },
-    {
-      icon: Cpu,
-      title: "Advanced AI Solutions",
-      description: "End-to-end AI implementation services. From deployment to optimization, we ensure your AI solutions deliver maximum efficiency and performance.",
-      features: [
-        "Complete implementation lifecycle",
-        "System deployment & integration",
-        "Performance optimization",
-        "Continuous improvement",
-      ],
-    },
-    {
-      icon: Wrench,
-      title: "Custom Industrial AI Solutions",
-      description: "Bespoke AI applications tailored to your specific business challenges. We develop solutions that address your unique operational needs.",
-      features: [
-        "Tailored AI applications",
-        "Industry-specific customization",
-        "Scalable architecture",
-        "Ongoing support",
-      ],
-    },
-    {
-      icon: GraduationCap,
-      title: "Training & Education",
-      description: "Comprehensive workshops, webinars, and on-site training programs to empower your teams with the AI skills they need to succeed.",
-      features: [
-        "Hands-on workshops",
-        "Interactive webinars",
-        "On-site training",
-        "Certification programs",
-      ],
-    },
-  ];
+  const [services, setServices] = useState<Service[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchServices();
+  }, []);
+
+  const fetchServices = async () => {
+    const { data, error } = await supabase
+      .from("services")
+      .select("*")
+      .order("created_at", { ascending: true });
+
+    if (!error && data) {
+      setServices(data);
+    }
+    setLoading(false);
+  };
+
+  const getIcon = (iconName: string) => {
+    const Icon = (LucideIcons as any)[iconName] || LucideIcons.MessageSquare;
+    return Icon;
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -82,35 +70,42 @@ const Services = () => {
       {/* Services Grid */}
       <section className="py-20 px-4">
         <div className="container mx-auto max-w-6xl">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {services.map((service, index) => (
-              <Card 
-                key={index} 
-                className="hover:shadow-xl transition-all border-2 hover:border-primary/50 group hover-lift animate-fade-in"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <CardHeader>
-                  <div className="h-14 w-14 rounded-xl bg-gradient-primary flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                    <service.icon className="h-7 w-7 text-white" />
-                  </div>
-                  <CardTitle className="text-2xl group-hover:text-primary transition-colors">{service.title}</CardTitle>
-                  <CardDescription className="text-base">
-                    {service.description}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2">
-                    {service.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-center space-x-2">
-                        <div className="h-1.5 w-1.5 rounded-full bg-gradient-primary flex-shrink-0" />
-                        <span className="text-sm text-muted-foreground">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          {loading ? (
+            <div className="text-center">Loading services...</div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {services.map((service, index) => {
+                const Icon = getIcon(service.icon);
+                return (
+                  <Card 
+                    key={service.id} 
+                    className="hover:shadow-xl transition-all border-2 hover:border-primary/50 group hover-lift animate-fade-in"
+                    style={{ animationDelay: `${index * 0.1}s` }}
+                  >
+                    <CardHeader>
+                      <div className="h-14 w-14 rounded-xl bg-gradient-primary flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <Icon className="h-7 w-7 text-white" />
+                      </div>
+                      <CardTitle className="text-2xl group-hover:text-primary transition-colors">{service.title}</CardTitle>
+                      <CardDescription className="text-base">
+                        {service.description}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <ul className="space-y-2">
+                        {service.features.map((feature, idx) => (
+                          <li key={idx} className="flex items-center space-x-2">
+                            <div className="h-1.5 w-1.5 rounded-full bg-gradient-primary flex-shrink-0" />
+                            <span className="text-sm text-muted-foreground">{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+          )}
         </div>
       </section>
 
