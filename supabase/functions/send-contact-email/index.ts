@@ -45,10 +45,28 @@ const handler = async (req: Request): Promise<Response> => {
 
     console.log("Admin notification sent successfully:", adminEmailResponse);
 
+    // Send confirmation to user
+    const userEmailResponse = await resend.emails.send({
+      from: "ForeSite AI <onboarding@resend.dev>",
+      to: [email],
+      subject: "Thank you for contacting ForeSite AI",
+      html: `
+        <h1>Thank you for contacting us, ${firstName}!</h1>
+        <p>We have received your message and will get back to you as soon as possible.</p>
+        <p><strong>Your message:</strong></p>
+        <p style="white-space: pre-wrap;">${message}</p>
+        <br>
+        <p>Best regards,<br>The ForeSite AI Team</p>
+      `,
+    });
+
+    console.log("User confirmation sent successfully:", userEmailResponse);
+
     return new Response(
       JSON.stringify({ 
         success: true,
-        adminEmail: adminEmailResponse
+        adminEmail: adminEmailResponse,
+        userEmail: userEmailResponse
       }),
       {
         status: 200,
