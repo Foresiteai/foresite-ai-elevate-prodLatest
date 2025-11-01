@@ -1,33 +1,46 @@
+import { useState, useEffect } from "react";
 import { Calendar, ArrowRight } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import { supabase } from "@/integrations/supabase/client";
+
+interface Post {
+  id: string;
+  title: string;
+  summary: string;
+  content: string;
+  category: string;
+  image_url: string;
+  published_date: string;
+}
 
 const News = () => {
-  const newsItems = [
-    {
-      title: "Notable Quotes from the 2024 Africa Energy Technology Conference",
-      date: "March 15, 2024",
-      category: "Industry Insights",
-      summary: "Key insights and quotes from world leaders and industry titans at the premier African energy technology summit. Discussions covered the future of AI in energy, sustainable practices, and technological innovations shaping the continent's energy landscape.",
-      image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=800",
-    },
-    {
-      title: "SIKOUM Limestone Project — Core Drilling Launched by SONAMINES",
-      date: "February 28, 2024",
-      category: "Project Update",
-      summary: "Detailed overview of the core drilling work at the SIKOUM Limestone Project. The initiative includes engagement with local leadership, comprehensive geophysical assessments, and advanced mechanical evaluations to ensure sustainable resource extraction.",
-      image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=800",
-    },
-    {
-      title: "High-Stakes AI Summit in Paris: World Leaders and Tech Titans",
-      date: "February 10, 2024",
-      category: "Global AI",
-      summary: "Comprehensive coverage of the landmark AI summit in Paris featuring world leaders, tech industry titans, and challenging diplomatic discussions. Topics included AI governance, ethical frameworks, international cooperation, and the future direction of artificial intelligence technology.",
-      image: "https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&q=80&w=800",
-    },
-  ];
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchPosts();
+  }, []);
+
+  const fetchPosts = async () => {
+    const { data } = await supabase
+      .from("posts")
+      .select("*")
+      .order("published_date", { ascending: false });
+    
+    setPosts(data || []);
+    setLoading(false);
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -48,46 +61,54 @@ const News = () => {
       {/* News Grid */}
       <section className="py-20 px-4">
         <div className="container mx-auto max-w-6xl">
-          <div className="space-y-8">
-            {newsItems.map((item, index) => (
-              <Card key={index} className="overflow-hidden hover:shadow-xl transition-all border-2 hover:border-primary/50">
-                <div className="grid grid-cols-1 md:grid-cols-3">
-                  <div className="md:col-span-1 h-64 md:h-auto relative overflow-hidden">
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="absolute inset-0 w-full h-full object-cover transition-transform hover:scale-105"
-                    />
-                  </div>
-                  <div className="md:col-span-2">
-                    <CardHeader>
-                      <div className="flex items-center space-x-4 mb-2">
-                        <span className="px-3 py-1 bg-primary/10 text-primary text-xs font-semibold rounded-full">
-                          {item.category}
-                        </span>
-                        <div className="flex items-center text-sm text-muted-foreground">
-                          <Calendar className="h-4 w-4 mr-1" />
-                          {item.date}
-                        </div>
+          {posts.length === 0 ? (
+            <div className="text-center text-muted-foreground">
+              <p className="text-xl">No posts available yet. Check back soon!</p>
+            </div>
+          ) : (
+            <div className="space-y-8">
+              {posts.map((post) => (
+                <Card key={post.id} className="overflow-hidden hover:shadow-xl transition-all border-2 hover:border-primary/50">
+                  <div className="grid grid-cols-1 md:grid-cols-3">
+                    {post.image_url && (
+                      <div className="md:col-span-1 h-64 md:h-auto relative overflow-hidden">
+                        <img
+                          src={post.image_url}
+                          alt={post.title}
+                          className="absolute inset-0 w-full h-full object-cover transition-transform hover:scale-105"
+                        />
                       </div>
-                      <CardTitle className="text-2xl hover:text-primary transition-colors">
-                        {item.title}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <CardDescription className="text-base mb-4">
-                        {item.summary}
-                      </CardDescription>
-                      <Button variant="outline" className="group">
-                        Read More
-                        <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                      </Button>
-                    </CardContent>
+                    )}
+                    <div className={post.image_url ? "md:col-span-2" : "md:col-span-3"}>
+                      <CardHeader>
+                        <div className="flex items-center space-x-4 mb-2">
+                          <span className="px-3 py-1 bg-primary/10 text-primary text-xs font-semibold rounded-full">
+                            {post.category}
+                          </span>
+                          <div className="flex items-center text-sm text-muted-foreground">
+                            <Calendar className="h-4 w-4 mr-1" />
+                            {new Date(post.published_date).toLocaleDateString()}
+                          </div>
+                        </div>
+                        <CardTitle className="text-2xl hover:text-primary transition-colors">
+                          {post.title}
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <CardDescription className="text-base mb-4">
+                          {post.summary}
+                        </CardDescription>
+                        <Button variant="outline" className="group">
+                          Read More
+                          <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                        </Button>
+                      </CardContent>
+                    </div>
                   </div>
-                </div>
-              </Card>
-            ))}
-          </div>
+                </Card>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
