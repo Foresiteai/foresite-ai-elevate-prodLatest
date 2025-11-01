@@ -190,8 +190,8 @@ const Industries = () => {
                   ? getColorGradient(industry.name) 
                   : getColorFromIcon(industry.icon);
                 
-                // Use database image if available, otherwise use local image map
-                const displayImage = industry.image_url || industryImageMap[industry.name];
+                // Use database image_url which is already stored in Supabase
+                const displayImage = industry.image_url;
                 
                 return (
                   <Card
