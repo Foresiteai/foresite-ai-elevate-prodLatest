@@ -6,6 +6,24 @@ import Footer from "@/components/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import industrialAI from "@/assets/industrial-ai.jpg";
+import miningAI from "@/assets/mining-ai.jpg";
+import oilGasAI from "@/assets/oil-gas-ai.jpg";
+import retailAI from "@/assets/retail-ai.jpg";
+import healthcareAI from "@/assets/healthcare-ai.jpg";
+import financeAI from "@/assets/finance-ai.jpg";
+import supplyChainAI from "@/assets/supply-chain-ai.jpg";
+
+// Map industry slugs to local images
+const industryImages: Record<string, string> = {
+  "manufacturing": industrialAI,
+  "mining": miningAI,
+  "oil-and-gas": oilGasAI,
+  "retail": retailAI,
+  "healthcare": healthcareAI,
+  "finance": financeAI,
+  "supply-chain": supplyChainAI,
+};
 
 interface Industry {
   id: string;
@@ -89,18 +107,14 @@ const IndustryDetail = () => {
 
       {/* Hero Section with Full Image Background */}
       <section className="relative pt-24 pb-32 px-4 overflow-hidden min-h-[70vh] flex items-center">
-        {industry.image_url && (
-          <>
-            <div className="absolute inset-0 z-0">
-              <img 
-                src={industry.image_url} 
-                alt={industry.name} 
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-br from-background/95 via-background/85 to-primary/30"></div>
-            </div>
-          </>
-        )}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src={industryImages[industry.slug] || industry.image_url || ""} 
+            alt={industry.name} 
+            className="w-full h-full object-cover opacity-50"
+          />
+          <div className="absolute inset-0 bg-gradient-to-br from-background/80 via-background/60 to-primary/30"></div>
+        </div>
         <div className="container mx-auto max-w-5xl relative z-10 animate-fade-in">
           <Badge className="mb-6 text-lg px-6 py-2 bg-primary/10 text-primary border-primary/20">
             Industry Solutions
