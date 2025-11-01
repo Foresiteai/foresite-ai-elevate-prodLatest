@@ -111,7 +111,7 @@ const Contact = () => {
                         value={formData.firstName}
                         onChange={handleChange}
                         required
-                        placeholder="John"
+                        placeholder="Carlson"
                       />
                     </div>
                     <div className="space-y-2">
@@ -122,7 +122,7 @@ const Contact = () => {
                         value={formData.lastName}
                         onChange={handleChange}
                         required
-                        placeholder="Doe"
+                        placeholder="Hay"
                       />
                     </div>
                   </div>
@@ -136,7 +136,7 @@ const Contact = () => {
                       value={formData.email}
                       onChange={handleChange}
                       required
-                      placeholder="john.doe@example.com"
+                      placeholder="you@example.com"
                     />
                   </div>
 
