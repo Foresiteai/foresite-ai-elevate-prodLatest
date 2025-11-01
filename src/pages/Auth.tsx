@@ -42,7 +42,8 @@ const Auth = () => {
         title: "Success!",
         description: "You have been signed in successfully.",
       });
-      // Navigate will happen in useEffect when isAdmin is set
+      setIsLoading(false);
+      // Redirect happens in useAuth onAuthStateChange
     }
   };
 
