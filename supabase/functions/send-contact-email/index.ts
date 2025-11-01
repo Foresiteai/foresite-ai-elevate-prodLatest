@@ -26,45 +26,30 @@ const handler = async (req: Request): Promise<Response> => {
 
     console.log("Sending contact notification email for:", email);
 
-    // Send notification to admin
+    // Send notification to admin with all contact details
     const adminEmailResponse = await resend.emails.send({
       from: "ForeSite AI <onboarding@resend.dev>",
-      to: ["Foresiteai@gmail.com"],
+      to: ["foresiteai@gmail.com"],
+      replyTo: email, // Allow direct reply to the person who submitted the form
       subject: `New Contact Form Submission from ${firstName} ${lastName}`,
       html: `
         <h2>New Contact Form Submission</h2>
         <p><strong>From:</strong> ${firstName} ${lastName}</p>
-        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
         <p><strong>Message:</strong></p>
-        <p>${message}</p>
+        <p style="white-space: pre-wrap;">${message}</p>
+        <hr style="margin: 20px 0;">
+        <p style="color: #666; font-size: 12px;">You can reply directly to this email to respond to ${firstName}.</p>
       `,
     });
 
     console.log("Admin notification sent successfully:", adminEmailResponse);
 
-    // Send confirmation to user
-    const userEmailResponse = await resend.emails.send({
-      from: "ForeSite AI <onboarding@resend.dev>",
-      to: [email],
-      subject: "Thank you for contacting ForeSite AI",
-      html: `
-        <h1>Thank you for contacting us, ${firstName}!</h1>
-        <p>We have received your message and will get back to you as soon as possible.</p>
-        <p><strong>Your message:</strong></p>
-        <p>${message}</p>
-        <br>
-        <p>Best regards,<br>The ForeSite AI Team</p>
-      `,
-    });
-
-    console.log("User confirmation sent successfully:", userEmailResponse);
-
     return new Response(
       JSON.stringify({ 
         success: true,
-        adminEmail: adminEmailResponse,
-        userEmail: userEmailResponse
-      }), 
+        adminEmail: adminEmailResponse
+      }),
       {
         status: 200,
         headers: {
