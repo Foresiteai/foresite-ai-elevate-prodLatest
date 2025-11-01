@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Calendar, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Navigation from "@/components/Navigation";
@@ -98,10 +99,12 @@ const News = () => {
                         <CardDescription className="text-base mb-4">
                           {post.summary}
                         </CardDescription>
-                        <Button variant="outline" className="group">
-                          Read More
-                          <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                        </Button>
+                        <Link to={`/news/${post.id}`}>
+                          <Button variant="outline" className="group">
+                            Read More
+                            <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                          </Button>
+                        </Link>
                       </CardContent>
                     </div>
                   </div>

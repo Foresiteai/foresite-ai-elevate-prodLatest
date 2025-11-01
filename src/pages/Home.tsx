@@ -1,5 +1,5 @@
 import { ArrowRight, CheckCircle2, Sparkles, Cpu, TrendingUp, Users, Award, Clock, Shield, Zap, Target, BarChart3 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Navigation from "@/components/Navigation";
@@ -10,6 +10,8 @@ import miningAI from "@/assets/mining-ai.jpg";
 import oilGasAI from "@/assets/oil-gas-ai.jpg";
 
 const Home = () => {
+  const navigate = useNavigate();
+  
   const features = [
     { icon: Sparkles, text: "Innovative AI solutions" },
     { icon: Cpu, text: "Industry-specific expertise" },
@@ -232,6 +234,7 @@ const Home = () => {
             {industries.map((industry, index) => (
               <div
                 key={index}
+                onClick={() => navigate('/industries')}
                 className="relative group overflow-hidden rounded-xl h-48 cursor-pointer hover-lift"
               >
                 {industry.image ? (
