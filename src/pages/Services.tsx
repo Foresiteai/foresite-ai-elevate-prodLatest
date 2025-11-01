@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import * as LucideIcons from "lucide-react";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -35,6 +36,7 @@ const serviceImages: Record<string, string> = {
 };
 
 const Services = () => {
+  const navigate = useNavigate();
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -57,6 +59,10 @@ const Services = () => {
   const getIcon = (iconName: string) => {
     const Icon = (LucideIcons as any)[iconName] || LucideIcons.MessageSquare;
     return Icon;
+  };
+
+  const handleServiceClick = (serviceId: string) => {
+    navigate(`/services/${serviceId}`);
   };
 
   return (
@@ -96,7 +102,8 @@ const Services = () => {
                 return (
                   <Card 
                     key={service.id} 
-                    className="hover:shadow-xl transition-all border-2 hover:border-primary/50 group overflow-hidden hover-lift animate-fade-in"
+                    onClick={() => handleServiceClick(service.id)}
+                    className="hover:shadow-xl transition-all border-2 hover:border-primary/50 group overflow-hidden hover-lift animate-fade-in cursor-pointer"
                     style={{ animationDelay: `${index * 0.1}s` }}
                   >
                     {serviceImage && (
