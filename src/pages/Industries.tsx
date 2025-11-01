@@ -19,6 +19,7 @@ interface Industry {
   description: string;
   icon: string;
   image_url: string | null;
+  slug: string;
 }
 
 const industryImageMap: Record<string, string> = {
@@ -147,8 +148,8 @@ const Industries = () => {
     return colors[iconName] || "from-blue-500 to-cyan-600";
   };
 
-  const handleIndustryClick = (industryId: string) => {
-    navigate(`/industries/${industryId}`);
+  const handleIndustryClick = (industrySlug: string) => {
+    navigate(`/industries/${industrySlug}`);
   };
 
   return (
@@ -196,7 +197,7 @@ const Industries = () => {
                 return (
                   <Card
                     key={industry.id}
-                    onClick={() => handleIndustryClick(industry.id)}
+                    onClick={() => handleIndustryClick(industry.slug)}
                     className="hover:shadow-xl transition-all border-2 hover:border-primary/50 group overflow-hidden hover-lift animate-fade-in cursor-pointer"
                     style={{ animationDelay: `${index * 0.1}s` }}
                   >
