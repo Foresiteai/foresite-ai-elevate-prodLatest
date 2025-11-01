@@ -34,7 +34,9 @@ const Industries = () => {
       .order("created_at", { ascending: true });
     
     if (data) {
-      setDbIndustries(data);
+      // Filter out industries without slugs and ensure they have image URLs
+      const validIndustries = data.filter(industry => industry.slug);
+      setDbIndustries(validIndustries);
     }
     setLoading(false);
   };

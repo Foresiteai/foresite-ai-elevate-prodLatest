@@ -85,7 +85,9 @@ const Home = () => {
       .order("name");
     
     if (data) {
-      setIndustries(data);
+      // Filter out industries without slugs
+      const validIndustries = data.filter(industry => industry.slug);
+      setIndustries(validIndustries);
     }
   };
 
