@@ -49,8 +49,8 @@ const Industries = () => {
     },
     {
       icon: Truck,
-      title: "Transportation",
-      description: "Optimize logistics, route planning, and fleet management with AI-powered transportation solutions.",
+      title: "Supply Chain",
+      description: "Optimize logistics, route planning, and fleet management with AI-powered supply chain solutions.",
       color: "from-indigo-500 to-blue-600",
     },
   ];
@@ -128,7 +128,7 @@ const Industries = () => {
             While we serve various industries, our team specializes in AI solutions for heavy industries
           </p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {["Manufacturing", "Mining", "Oil & Gas", "Transportation"].map((industry, index) => (
+            {["Manufacturing", "Mining", "Oil & Gas", "Supply Chain"].map((industry, index) => (
               <div
                 key={industry}
                 className="p-6 bg-white/10 backdrop-blur-sm border-2 border-white/20 rounded-lg hover:bg-white/20 transition-all hover-lift animate-fade-in"

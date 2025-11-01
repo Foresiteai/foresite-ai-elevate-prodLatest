@@ -44,9 +44,6 @@ const Navigation = () => {
                 {link.name}
               </Link>
             ))}
-            <Link to="/auth">
-              <Button className="ml-4">Sign In</Button>
-            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -75,9 +72,6 @@ const Navigation = () => {
                 {link.name}
               </Link>
             ))}
-            <Link to="/auth" onClick={() => setIsOpen(false)} className="block pt-2">
-              <Button className="w-full">Sign In</Button>
-            </Link>
           </div>
         )}
       </div>

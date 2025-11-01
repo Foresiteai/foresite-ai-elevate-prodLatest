@@ -49,7 +49,7 @@ const Home = () => {
     { name: "Retail", gradient: true },
     { name: "Healthcare", gradient: true },
     { name: "Finance", gradient: true },
-    { name: "Transportation", gradient: true },
+    { name: "Supply Chain", gradient: true },
   ];
 
   const benefits = [

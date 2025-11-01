@@ -33,7 +33,7 @@ const About = () => {
     { name: "Manufacturing", icon: Cpu },
     { name: "Mining", icon: Target },
     { name: "Oil & Gas", icon: Lightbulb },
-    { name: "Transportation", icon: Users },
+    { name: "Supply Chain", icon: Users },
   ];
 
   return (
@@ -75,7 +75,7 @@ const About = () => {
                 To empower industries through innovative AI solutions, providing the tools and knowledge needed to harness AI for efficiency, productivity, and growth.
               </p>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                We focus on heavy industries including Manufacturing, Mining, Oil & Gas, and Transportation, bringing cutting-edge AI technology where it matters most.
+                We focus on heavy industries including Manufacturing, Mining, Oil & Gas, and Supply Chain, bringing cutting-edge AI technology where it matters most.
               </p>
             </div>
             <div className="grid grid-cols-2 gap-4">
