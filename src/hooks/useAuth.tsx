@@ -39,7 +39,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
               .eq("role", "admin")
               .maybeSingle();
             
-            setIsAdmin(!!data);
+            const userIsAdmin = !!data;
+            setIsAdmin(userIsAdmin);
+            
+            // Redirect to admin dashboard if signing in as admin
+            if (event === 'SIGNED_IN' && userIsAdmin) {
+              navigate("/admin");
+            }
           }, 0);
         } else {
           setIsAdmin(false);
