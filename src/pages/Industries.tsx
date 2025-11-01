@@ -191,9 +191,6 @@ const Industries = () => {
                   ? getColorGradient(industry.name) 
                   : getColorFromIcon(industry.icon);
                 
-                // Use database image_url which is already stored in Supabase
-                const displayImage = industry.image_url;
-                
                 return (
                   <Card
                     key={industry.id}
@@ -201,14 +198,14 @@ const Industries = () => {
                     className="hover:shadow-xl transition-all border-2 hover:border-primary/50 group overflow-hidden hover-lift animate-fade-in cursor-pointer"
                     style={{ animationDelay: `${index * 0.1}s` }}
                   >
-                    {displayImage && (
+                    {industry.image_url && (
                       <div className="relative h-48 overflow-hidden">
                         <img 
-                          src={displayImage} 
+                          src={industry.image_url} 
                           alt={industry.name}
                           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent"></div>
+                        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent"></div>
                       </div>
                     )}
                     <CardHeader>
