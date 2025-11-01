@@ -1,16 +1,22 @@
 import { ArrowRight, CheckCircle2, Sparkles, Cpu, TrendingUp, Users, Award, Clock, Shield, Zap, Target, BarChart3 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import { supabase } from "@/integrations/supabase/client";
 import heroImage from "@/assets/hero-ai.jpg";
-import industrialAI from "@/assets/industrial-ai.jpg";
-import miningAI from "@/assets/mining-ai.jpg";
-import oilGasAI from "@/assets/oil-gas-ai.jpg";
+
+interface Industry {
+  id: string;
+  name: string;
+  image_url: string | null;
+}
 
 const Home = () => {
   const navigate = useNavigate();
+  const [industries, setIndustries] = useState<Industry[]>([]);
   
   const features = [
     { icon: Sparkles, text: "Innovative AI solutions" },
@@ -44,16 +50,6 @@ const Home = () => {
     { value: "100%", label: "Data Security", icon: Shield },
   ];
 
-  const industries = [
-    { name: "Mining", image: miningAI, slug: "mining" },
-    { name: "Oil & Gas", image: oilGasAI, slug: "oil-gas" },
-    { name: "Manufacturing", image: industrialAI, slug: "manufacturing" },
-    { name: "Retail", gradient: true, slug: "retail" },
-    { name: "Healthcare", gradient: true, slug: "healthcare" },
-    { name: "Finance", gradient: true, slug: "finance" },
-    { name: "Supply Chain", gradient: true, slug: "supply-chain" },
-  ];
-
   const benefits = [
     {
       icon: BarChart3,
@@ -76,6 +72,21 @@ const Home = () => {
       description: "Stay ahead of the curve with cutting-edge AI technology tailored to your industry."
     },
   ];
+
+  useEffect(() => {
+    fetchIndustries();
+  }, []);
+
+  const fetchIndustries = async () => {
+    const { data } = await supabase
+      .from("industries")
+      .select("id, name, image_url")
+      .order("name");
+    
+    if (data) {
+      setIndustries(data);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -233,14 +244,14 @@ const Home = () => {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {industries.map((industry, index) => (
               <div
-                key={index}
-                onClick={() => navigate(`/industries/${industry.slug}`)}
+                key={industry.id}
+                onClick={() => navigate(`/industries/${industry.id}`)}
                 className="relative group overflow-hidden rounded-xl h-48 cursor-pointer hover-lift"
               >
-                {industry.image ? (
+                {industry.image_url ? (
                   <>
                     <img 
-                      src={industry.image} 
+                      src={industry.image_url} 
                       alt={industry.name}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     />

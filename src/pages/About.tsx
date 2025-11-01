@@ -1,11 +1,23 @@
 import { Target, Lightbulb, Award, Heart, Users, Cpu } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import { supabase } from "@/integrations/supabase/client";
 import teamImage from "@/assets/team-training.jpg";
 import aiConsulting from "@/assets/ai-consulting.jpg";
 
+interface Industry {
+  id: string;
+  name: string;
+  image_url: string | null;
+  icon: string;
+}
+
 const About = () => {
+  const navigate = useNavigate();
+  const [focusIndustries, setFocusIndustries] = useState<Industry[]>([]);
   const values = [
     {
       icon: Lightbulb,
@@ -29,12 +41,28 @@ const About = () => {
     },
   ];
 
-  const focusAreas = [
-    { name: "Manufacturing", icon: Cpu },
-    { name: "Mining", icon: Target },
-    { name: "Oil & Gas", icon: Lightbulb },
-    { name: "Supply Chain", icon: Users },
-  ];
+  const getIconComponent = (iconName: string) => {
+    const icons: Record<string, any> = {
+      Cpu, Target, Lightbulb, Users, Heart, Award
+    };
+    return icons[iconName] || Cpu;
+  };
+
+  useEffect(() => {
+    fetchFocusIndustries();
+  }, []);
+
+  const fetchFocusIndustries = async () => {
+    const { data } = await supabase
+      .from("industries")
+      .select("*")
+      .in("name", ["Manufacturing", "Mining", "Oil & Gas", "Supply Chain"])
+      .order("name");
+    
+    if (data) {
+      setFocusIndustries(data);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -79,18 +107,22 @@ const About = () => {
               </p>
             </div>
             <div className="grid grid-cols-2 gap-4">
-              {focusAreas.map((area, index) => (
-                <Card 
-                  key={index} 
-                  className="border-2 hover:border-primary/50 transition-all hover-lift group animate-fade-in"
-                  style={{ animationDelay: `${index * 0.1}s` }}
-                >
-                  <CardContent className="p-6">
-                    <area.icon className="h-8 w-8 text-primary mb-3 group-hover:scale-110 transition-transform" />
-                    <p className="font-semibold">{area.name}</p>
-                  </CardContent>
-                </Card>
-              ))}
+              {focusIndustries.map((industry, index) => {
+                const IconComponent = getIconComponent(industry.icon);
+                return (
+                  <Card 
+                    key={industry.id} 
+                    onClick={() => navigate(`/industries/${industry.id}`)}
+                    className="border-2 hover:border-primary/50 transition-all hover-lift group animate-fade-in cursor-pointer"
+                    style={{ animationDelay: `${index * 0.1}s` }}
+                  >
+                    <CardContent className="p-6">
+                      <IconComponent className="h-8 w-8 text-primary mb-3 group-hover:scale-110 transition-transform" />
+                      <p className="font-semibold">{industry.name}</p>
+                    </CardContent>
+                  </Card>
+                );
+              })}
             </div>
           </div>
         </div>
