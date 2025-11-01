@@ -11,6 +11,7 @@ import heroImage from "@/assets/hero-ai.jpg";
 interface Industry {
   id: string;
   name: string;
+  slug: string;
   image_url: string | null;
 }
 
@@ -80,7 +81,7 @@ const Home = () => {
   const fetchIndustries = async () => {
     const { data } = await supabase
       .from("industries")
-      .select("id, name, image_url")
+      .select("id, name, slug, image_url")
       .order("name");
     
     if (data) {
@@ -245,7 +246,8 @@ const Home = () => {
             {industries.map((industry, index) => (
               <div
                 key={industry.id}
-                className="relative group overflow-hidden rounded-xl h-48"
+                onClick={() => navigate(`/industries/${industry.slug}`)}
+                className="relative group overflow-hidden rounded-xl h-48 cursor-pointer hover-lift"
               >
                 {industry.image_url ? (
                   <>
@@ -254,7 +256,7 @@ const Home = () => {
                       alt={industry.name}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-primary-dark/90 to-primary/40"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-primary-dark/90 to-primary/40 group-hover:from-primary/90 transition-all duration-300"></div>
                   </>
                 ) : (
                   <div className="absolute inset-0 bg-gradient-primary"></div>

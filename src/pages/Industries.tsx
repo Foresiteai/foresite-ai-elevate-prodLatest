@@ -5,13 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { supabase } from "@/integrations/supabase/client";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import miningAI from "@/assets/mining-ai.jpg";
-import oilGasAI from "@/assets/oil-gas-ai.jpg";
 import industrialAI from "@/assets/industrial-ai.jpg";
-import retailAI from "@/assets/retail-ai.jpg";
-import healthcareAI from "@/assets/healthcare-ai.jpg";
-import financeAI from "@/assets/finance-ai.jpg";
-import supplyChainAI from "@/assets/supply-chain-ai.jpg";
 
 interface Industry {
   id: string;
@@ -22,73 +16,12 @@ interface Industry {
   slug: string;
 }
 
-const industryImageMap: Record<string, string> = {
-  "Mining": miningAI,
-  "Oil & Gas": oilGasAI,
-  "Retail": retailAI,
-  "Manufacturing": industrialAI,
-  "Healthcare": healthcareAI,
-  "Finance": financeAI,
-  "Supply Chain": supplyChainAI,
-};
 
 const Industries = () => {
   const navigate = useNavigate();
   const [dbIndustries, setDbIndustries] = useState<Industry[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Default industries data as fallback
-  const defaultIndustries = [
-    {
-      id: "mining",
-      name: "Mining",
-      description: "Optimize extraction processes, predictive maintenance, and resource allocation with AI-powered solutions for the mining industry.",
-      icon: "Pickaxe",
-      image_url: miningAI,
-    },
-    {
-      id: "oil-gas",
-      name: "Oil & Gas",
-      description: "Enhance exploration, production optimization, and safety protocols with advanced AI analytics for oil and gas operations.",
-      icon: "Droplet",
-      image_url: oilGasAI,
-    },
-    {
-      id: "retail",
-      name: "Retail",
-      description: "Transform customer experience, inventory management, and demand forecasting with intelligent retail solutions.",
-      icon: "ShoppingCart",
-      image_url: null,
-    },
-    {
-      id: "manufacturing",
-      name: "Manufacturing",
-      description: "Streamline production lines, quality control, and supply chain management with AI-driven manufacturing solutions.",
-      icon: "Factory",
-      image_url: industrialAI,
-    },
-    {
-      id: "healthcare",
-      name: "Healthcare",
-      description: "Improve patient outcomes, diagnostics, and operational efficiency with healthcare-focused AI applications.",
-      icon: "Heart",
-      image_url: null,
-    },
-    {
-      id: "finance",
-      name: "Finance",
-      description: "Enhance risk assessment, fraud detection, and financial forecasting with sophisticated AI models.",
-      icon: "DollarSign",
-      image_url: null,
-    },
-    {
-      id: "supply-chain",
-      name: "Supply Chain",
-      description: "Optimize logistics, route planning, and fleet management with AI-powered supply chain solutions.",
-      icon: "Truck",
-      image_url: null,
-    },
-  ];
 
   useEffect(() => {
     fetchIndustries();
@@ -100,11 +33,8 @@ const Industries = () => {
       .select("*")
       .order("created_at", { ascending: true });
     
-    // Use database data if available, otherwise use default data
-    if (data && data.length > 0) {
+    if (data) {
       setDbIndustries(data);
-    } else {
-      setDbIndustries(defaultIndustries as any);
     }
     setLoading(false);
   };
