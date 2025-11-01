@@ -157,6 +157,7 @@ export type Database = {
           features: string[] | null
           icon: string
           id: string
+          image_url: string | null
           title: string
           updated_at: string | null
         }
@@ -166,6 +167,7 @@ export type Database = {
           features?: string[] | null
           icon: string
           id?: string
+          image_url?: string | null
           title: string
           updated_at?: string | null
         }
@@ -175,6 +177,7 @@ export type Database = {
           features?: string[] | null
           icon?: string
           id?: string
+          image_url?: string | null
           title?: string
           updated_at?: string | null
         }
