@@ -28,6 +28,7 @@ const IndustriesManager = () => {
     description: "",
     icon: "Factory",
     image_url: "",
+    slug: "",
   });
   const [uploading, setUploading] = useState(false);
 
@@ -78,10 +79,14 @@ const IndustriesManager = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Generate slug from name if not provided
+    const slug = formData.slug || formData.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+    const dataToSubmit = { ...formData, slug };
+
     if (editing) {
       const { error } = await supabase
         .from("industries")
-        .update(formData)
+        .update(dataToSubmit)
         .eq("id", editing);
 
       if (error) {
@@ -89,31 +94,32 @@ const IndustriesManager = () => {
       } else {
         toast({ title: "Industry updated successfully" });
         setEditing(null);
-        setFormData({ name: "", description: "", icon: "Factory", image_url: "" });
+        setFormData({ name: "", description: "", icon: "Factory", image_url: "", slug: "" });
         fetchIndustries();
       }
     } else {
       const { error } = await supabase
         .from("industries")
-        .insert([formData]);
+        .insert([dataToSubmit]);
 
       if (error) {
         toast({ title: "Error creating industry", variant: "destructive" });
       } else {
         toast({ title: "Industry created successfully" });
-        setFormData({ name: "", description: "", icon: "Factory", image_url: "" });
+        setFormData({ name: "", description: "", icon: "Factory", image_url: "", slug: "" });
         fetchIndustries();
       }
     }
   };
 
-  const handleEdit = (industry: Industry) => {
+  const handleEdit = (industry: Industry & { slug?: string }) => {
     setEditing(industry.id);
     setFormData({
       name: industry.name,
       description: industry.description,
       icon: industry.icon,
       image_url: industry.image_url || "",
+      slug: industry.slug || "",
     });
   };
 
@@ -186,6 +192,15 @@ const IndustriesManager = () => {
               />
             </div>
             <div>
+              <Label htmlFor="slug">Slug (URL-friendly name, auto-generated if empty)</Label>
+              <Input
+                id="slug"
+                value={formData.slug}
+                onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
+                placeholder="e.g., manufacturing, oil-and-gas"
+              />
+            </div>
+            <div>
               <Label htmlFor="image">Image</Label>
               <div className="flex gap-2">
                 <Input
@@ -210,7 +225,7 @@ const IndustriesManager = () => {
                   variant="outline"
                   onClick={() => {
                     setEditing(null);
-                    setFormData({ name: "", description: "", icon: "Factory", image_url: "" });
+                    setFormData({ name: "", description: "", icon: "Factory", image_url: "", slug: "" });
                   }}
                 >
                   Cancel
