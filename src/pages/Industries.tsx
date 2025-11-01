@@ -8,6 +8,10 @@ import Footer from "@/components/Footer";
 import miningAI from "@/assets/mining-ai.jpg";
 import oilGasAI from "@/assets/oil-gas-ai.jpg";
 import industrialAI from "@/assets/industrial-ai.jpg";
+import retailAI from "@/assets/retail-ai.jpg";
+import healthcareAI from "@/assets/healthcare-ai.jpg";
+import financeAI from "@/assets/finance-ai.jpg";
+import supplyChainAI from "@/assets/supply-chain-ai.jpg";
 
 interface Industry {
   id: string;
@@ -16,6 +20,16 @@ interface Industry {
   icon: string;
   image_url: string | null;
 }
+
+const industryImageMap: Record<string, string> = {
+  "Mining": miningAI,
+  "Oil & Gas": oilGasAI,
+  "Retail": retailAI,
+  "Manufacturing": industrialAI,
+  "Healthcare": healthcareAI,
+  "Finance": financeAI,
+  "Supply Chain": supplyChainAI,
+};
 
 const Industries = () => {
   const navigate = useNavigate();
@@ -176,6 +190,9 @@ const Industries = () => {
                   ? getColorGradient(industry.name) 
                   : getColorFromIcon(industry.icon);
                 
+                // Use database image if available, otherwise use local image map
+                const displayImage = industry.image_url || industryImageMap[industry.name];
+                
                 return (
                   <Card
                     key={industry.id}
@@ -183,10 +200,10 @@ const Industries = () => {
                     className="hover:shadow-xl transition-all border-2 hover:border-primary/50 group overflow-hidden hover-lift animate-fade-in cursor-pointer"
                     style={{ animationDelay: `${index * 0.1}s` }}
                   >
-                    {industry.image_url && (
+                    {displayImage && (
                       <div className="relative h-48 overflow-hidden">
                         <img 
-                          src={industry.image_url} 
+                          src={displayImage} 
                           alt={industry.name}
                           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                         />

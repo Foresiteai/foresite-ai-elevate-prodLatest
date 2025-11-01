@@ -9,6 +9,12 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import industrialAI from "@/assets/industrial-ai.jpg";
 import aiConsulting from "@/assets/ai-consulting.jpg";
+import aiStrategy from "@/assets/ai-strategy.jpg";
+import customAIModel from "@/assets/custom-ai-model.jpg";
+import processAutomation from "@/assets/process-automation.jpg";
+import predictiveAnalytics from "@/assets/predictive-analytics.jpg";
+import computerVision from "@/assets/computer-vision.jpg";
+import nlpAI from "@/assets/nlp-ai.jpg";
 
 interface Service {
   id: string;
@@ -16,7 +22,17 @@ interface Service {
   description: string;
   icon: string;
   features: string[];
+  image_url?: string;
 }
+
+const serviceImages: Record<string, string> = {
+  "AI Strategy & Consulting": aiStrategy,
+  "Custom AI Model Development": customAIModel,
+  "Process Automation": processAutomation,
+  "Predictive Analytics": predictiveAnalytics,
+  "Computer Vision Solutions": computerVision,
+  "Natural Language Processing": nlpAI,
+};
 
 const Services = () => {
   const [services, setServices] = useState<Service[]>([]);
@@ -76,12 +92,23 @@ const Services = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {services.map((service, index) => {
                 const Icon = getIcon(service.icon);
+                const serviceImage = serviceImages[service.title];
                 return (
                   <Card 
                     key={service.id} 
-                    className="hover:shadow-xl transition-all border-2 hover:border-primary/50 group hover-lift animate-fade-in"
+                    className="hover:shadow-xl transition-all border-2 hover:border-primary/50 group overflow-hidden hover-lift animate-fade-in"
                     style={{ animationDelay: `${index * 0.1}s` }}
                   >
+                    {serviceImage && (
+                      <div className="relative h-48 overflow-hidden">
+                        <img 
+                          src={serviceImage} 
+                          alt={service.title}
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent"></div>
+                      </div>
+                    )}
                     <CardHeader>
                       <div className="h-14 w-14 rounded-xl bg-gradient-primary flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                         <Icon className="h-7 w-7 text-white" />
