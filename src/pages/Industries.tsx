@@ -22,6 +22,59 @@ const Industries = () => {
   const [dbIndustries, setDbIndustries] = useState<Industry[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // Default industries data as fallback
+  const defaultIndustries = [
+    {
+      id: "mining",
+      name: "Mining",
+      description: "Optimize extraction processes, predictive maintenance, and resource allocation with AI-powered solutions for the mining industry.",
+      icon: "Pickaxe",
+      image_url: miningAI,
+    },
+    {
+      id: "oil-gas",
+      name: "Oil & Gas",
+      description: "Enhance exploration, production optimization, and safety protocols with advanced AI analytics for oil and gas operations.",
+      icon: "Droplet",
+      image_url: oilGasAI,
+    },
+    {
+      id: "retail",
+      name: "Retail",
+      description: "Transform customer experience, inventory management, and demand forecasting with intelligent retail solutions.",
+      icon: "ShoppingCart",
+      image_url: null,
+    },
+    {
+      id: "manufacturing",
+      name: "Manufacturing",
+      description: "Streamline production lines, quality control, and supply chain management with AI-driven manufacturing solutions.",
+      icon: "Factory",
+      image_url: industrialAI,
+    },
+    {
+      id: "healthcare",
+      name: "Healthcare",
+      description: "Improve patient outcomes, diagnostics, and operational efficiency with healthcare-focused AI applications.",
+      icon: "Heart",
+      image_url: null,
+    },
+    {
+      id: "finance",
+      name: "Finance",
+      description: "Enhance risk assessment, fraud detection, and financial forecasting with sophisticated AI models.",
+      icon: "DollarSign",
+      image_url: null,
+    },
+    {
+      id: "supply-chain",
+      name: "Supply Chain",
+      description: "Optimize logistics, route planning, and fleet management with AI-powered supply chain solutions.",
+      icon: "Truck",
+      image_url: null,
+    },
+  ];
+
   useEffect(() => {
     fetchIndustries();
   }, []);
@@ -32,8 +85,11 @@ const Industries = () => {
       .select("*")
       .order("created_at", { ascending: true });
     
-    if (data) {
+    // Use database data if available, otherwise use default data
+    if (data && data.length > 0) {
       setDbIndustries(data);
+    } else {
+      setDbIndustries(defaultIndustries as any);
     }
     setLoading(false);
   };
@@ -62,6 +118,19 @@ const Industries = () => {
       "Supply Chain": "from-indigo-500 to-blue-600",
     };
     return gradients[name] || "from-blue-500 to-cyan-600";
+  };
+
+  const getColorFromIcon = (iconName: string) => {
+    const colors: Record<string, string> = {
+      "Pickaxe": "from-amber-500 to-orange-600",
+      "Droplet": "from-blue-500 to-cyan-600",
+      "ShoppingCart": "from-purple-500 to-pink-600",
+      "Factory": "from-slate-500 to-gray-600",
+      "Heart": "from-red-500 to-rose-600",
+      "DollarSign": "from-green-500 to-emerald-600",
+      "Truck": "from-indigo-500 to-blue-600",
+    };
+    return colors[iconName] || "from-blue-500 to-cyan-600";
   };
 
   const handleIndustryClick = (industryId: string) => {
@@ -103,7 +172,9 @@ const Industries = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {dbIndustries.map((industry, index) => {
                 const IconComponent = getIconComponent(industry.icon);
-                const colorGradient = getColorGradient(industry.name);
+                const colorGradient = industry.name 
+                  ? getColorGradient(industry.name) 
+                  : getColorFromIcon(industry.icon);
                 
                 return (
                   <Card
