@@ -32,20 +32,29 @@ const IndustryDetail = () => {
   const fetchIndustryData = async () => {
     if (!industryId) return;
 
-    const { data: industryData } = await supabase
+    const { data: industryData, error } = await supabase
       .from("industries")
       .select("*")
       .eq("id", industryId)
-      .single();
+      .maybeSingle();
 
-    const { data: detailsData } = await supabase
-      .from("industry_details")
-      .select("*")
-      .eq("industry_id", industryId)
-      .order("order_index", { ascending: true });
+    if (error) {
+      console.error("Error fetching industry:", error);
+      setLoading(false);
+      return;
+    }
 
-    setIndustry(industryData);
-    setDetails(detailsData || []);
+    if (industryData) {
+      const { data: detailsData } = await supabase
+        .from("industry_details")
+        .select("*")
+        .eq("industry_id", industryId)
+        .order("order_index", { ascending: true });
+
+      setIndustry(industryData);
+      setDetails(detailsData || []);
+    }
+    
     setLoading(false);
   };
 
