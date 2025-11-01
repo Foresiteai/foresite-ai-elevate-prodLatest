@@ -7,6 +7,13 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { supabase } from "@/integrations/supabase/client";
 import heroImage from "@/assets/hero-ai.jpg";
+import industrialAI from "@/assets/industrial-ai.jpg";
+import miningAI from "@/assets/mining-ai.jpg";
+import oilGasAI from "@/assets/oil-gas-ai.jpg";
+import retailAI from "@/assets/retail-ai.jpg";
+import healthcareAI from "@/assets/healthcare-ai.jpg";
+import financeAI from "@/assets/finance-ai.jpg";
+import supplyChainAI from "@/assets/supply-chain-ai.jpg";
 
 interface Industry {
   id: string;
@@ -14,6 +21,17 @@ interface Industry {
   slug: string;
   image_url: string | null;
 }
+
+// Map industry slugs to local images
+const industryImages: Record<string, string> = {
+  "manufacturing": industrialAI,
+  "mining": miningAI,
+  "oil-and-gas": oilGasAI,
+  "retail": retailAI,
+  "healthcare": healthcareAI,
+  "finance": financeAI,
+  "supply-chain": supplyChainAI,
+};
 
 const Home = () => {
   const navigate = useNavigate();
@@ -251,10 +269,10 @@ const Home = () => {
                 onClick={() => navigate(`/industries/${industry.slug}`)}
                 className="relative group overflow-hidden rounded-xl h-48 cursor-pointer hover-lift"
               >
-                {industry.image_url ? (
+                {industryImages[industry.slug] ? (
                   <>
                     <img 
-                      src={industry.image_url} 
+                      src={industryImages[industry.slug]} 
                       alt={industry.name}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     />
