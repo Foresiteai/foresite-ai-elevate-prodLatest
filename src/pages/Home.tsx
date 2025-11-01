@@ -242,7 +242,7 @@ const Home = () => {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {industries.map((industry, index) => (
+            {industries.map((industry) => (
               <div
                 key={industry.id}
                 onClick={() => navigate(`/industries/${industry.id}`)}
