@@ -45,13 +45,13 @@ const Home = () => {
   ];
 
   const industries = [
-    { name: "Mining", image: miningAI },
-    { name: "Oil & Gas", image: oilGasAI },
-    { name: "Manufacturing", image: industrialAI },
-    { name: "Retail", gradient: true },
-    { name: "Healthcare", gradient: true },
-    { name: "Finance", gradient: true },
-    { name: "Supply Chain", gradient: true },
+    { name: "Mining", image: miningAI, slug: "mining" },
+    { name: "Oil & Gas", image: oilGasAI, slug: "oil-gas" },
+    { name: "Manufacturing", image: industrialAI, slug: "manufacturing" },
+    { name: "Retail", gradient: true, slug: "retail" },
+    { name: "Healthcare", gradient: true, slug: "healthcare" },
+    { name: "Finance", gradient: true, slug: "finance" },
+    { name: "Supply Chain", gradient: true, slug: "supply-chain" },
   ];
 
   const benefits = [
@@ -234,7 +234,7 @@ const Home = () => {
             {industries.map((industry, index) => (
               <div
                 key={index}
-                onClick={() => navigate('/industries')}
+                onClick={() => navigate(`/industries/${industry.slug}`)}
                 className="relative group overflow-hidden rounded-xl h-48 cursor-pointer hover-lift"
               >
                 {industry.image ? (
